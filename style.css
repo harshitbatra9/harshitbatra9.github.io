@@ -1,17 +1,18 @@
 body{
     margin:0;
-    background-color:#D0944D;
+    background-image: url(sky.jpg);
+    background-color:#B6E1E7;
     display: flex;
     min-height: 100vh;
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
-    color:#CB625F;
+    color:#01257D;
 
 
 }
 .container{
-    background-color: rgba(255,255,255,.30);
+    background-color: rgba(255,255,255,.80);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -63,6 +64,12 @@ body{
     font-weight: 500;
     
 }
+.ideal{
+    font-size: 16px;
+    font-weight: 500;
+    
+}
+
 .credit{
     text-align: right;
     color: rgba(0,0,0,.1);
