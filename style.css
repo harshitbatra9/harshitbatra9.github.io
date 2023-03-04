@@ -16,7 +16,7 @@ body{
     padding: 20px;
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
+
     box-shadow: 0 10px 10px rgba(0,0,0,.3);
     margin: 5px;
 }
@@ -28,7 +28,7 @@ body{
     padding: 10px 10px;
     font-size: 14px;
     background-color: rgba(255,255,255,.70);
-    
+    border-radius: 10px;
     margin: 10px;
 }
 .input:hover{
@@ -79,3 +79,12 @@ body{
     transition: all 300ms ease;
 
 }
+.hello{
+    background-color :#3988A4;
+    border: none;
+    padding: 3px 3px;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 20px;
+}
+  

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <div class="container">
+        <h1>Currency Converter</h1>
+        <div class="currency-container">
+            <select  id="currency-1">
+                <option value="AUD">AUSTRALIAN Dollar</option>
+                <option value="CAD">Canadian Dollar</option>
+                <option value="EUR">Euro</option>
+                <option value="GBP">Pound</option>
+                <option value="INR">Indian Rupee</option>
+                <option value="JPY">Yen(japan)</option>
+                <option value="USD" selected>US Dollar</option>
+                <option value="AED">UAE Dirham</option>
+            </select>
+            <input type="number" id="worth1"
+            value="1" min="0">
+            
+        </div>
+        <div class="currency-container">
+            <select  id="currency-2">
+                <option value="AUD">AUSTRALIAN Dollar</option>
+                <option value="CAD">Canadian Dollar</option>
+                <option value="EUR">Euro</option>
+                <option value="GBP">Pound</option>
+                <option value="INR"selected>Indian Rupee</option>
+                <option value="JPY">Yen(japan)</option>
+                <option value="USD" >US Dollar</option>
+                <option value="AED">UAE Dirham</option>
+            </select>
+            <input type="number" id="worth2"
+             min="0" disabled>
+            
+        </div>
+        <p class="exchange-rate"
+        id="exchange-rate">1USD =82.2 INR</p>
+        <h5 class="credit">Made by Harshit Batra  <a href="https://www.instagram.com/batra.exe/"><ion-icon name="logo-instagram"></ion-icon></a></h5>
+    </div>
+    <script src="index2.js"></script>
+    
+</body>
+</html>
