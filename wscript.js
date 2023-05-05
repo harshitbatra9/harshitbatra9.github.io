@@ -40,6 +40,9 @@ const api = {
     else if(weather.weather[0].main=='Snow'){
             document.body.style.backgroundImage = "url('snow.jpg')";
             }
+    else if(weather.weather[0].main=='Haze'){
+            document.body.style.backgroundImage = "url('haze.jpg')";
+            }
 
     else{
         document.body.style.backgroundImage = "url('fog.jpg')";
