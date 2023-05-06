@@ -72,7 +72,7 @@ const api = {
     weather_cloud.innerText =` Cloud Cover : ${weather.clouds.all}%`;
 
     let windspeed = document.querySelector('.current .winds');
-    windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h \n Gust Speed :(${Math.round(weather.wind.gust*3.6)}km/h)`;
+    windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h \n (Gust Speed :${Math.round(weather.wind.gust*3.6)}km/h)`;
   }
   
 
