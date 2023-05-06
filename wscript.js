@@ -2,7 +2,7 @@ const api = {
     key: "ec58e4a9d54b7e7309746e98f0835185",
     base: "https://api.openweathermap.org/data/2.5/"
   }
-  window.onload=getResults('delhi');
+  window.onload=getResults('Jamnagar');
   
   const searchbox = document.querySelector('.search-box');
   searchbox.addEventListener('keypress', setQuery);
@@ -21,7 +21,8 @@ const api = {
   }
   
   function displayResults (weather) {
-    console.log(weather.main.humidity)
+    console.log(weather.wind.speed);
+    console.log(weather.wind.gust);
     if(weather.weather[0].main=='Clear'){
         document.body.style.backgroundImage = "url('clear.jpg')";
         }
@@ -59,13 +60,21 @@ const api = {
   
     let weather_el = document.querySelector('.current .weather');
     weather_el.innerText = weather.weather[0].main;
-  
+
+    
     
     let feel=document.querySelector('.current .feelslike');
     feel.innerText=`Feels like ${Math.round(weather.main.feels_like)}°c`;
     let hum=document.querySelector('.current .humidity');
-    hum.innerText=`Humidity is ${Math.round(weather.main.humidity)}%`;
+    hum.innerText=`Humidity : ${Math.round(weather.main.humidity)}%`;
+
+    let weather_cloud = document.querySelector('.current .cloudcover');
+    weather_cloud.innerText =` Cloud Cover : ${weather.clouds.all}%`;
+
+    let windspeed = document.querySelector('.current .winds');
+    windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h \n Gust Speed :(${Math.round(weather.wind.gust*3.6)}km/h)`;
   }
+  
 
   function dateBuilder (d) {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
