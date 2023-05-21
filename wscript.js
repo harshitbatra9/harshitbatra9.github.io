@@ -39,13 +39,18 @@ function getCity(coordinates) {
 	function processRequest(e) {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			var response = JSON.parse(xhr.responseText);
-			city = response.address.municipality;
-			console.log(city);
-      call2(city);
+      console.log(response.address)
+			city = response.address.state_district;
+      if (city=== undefined) {
+        city = response.address.municipality;
+        call2(city);
+      }
+			else{
+      city = response.address.state_district;
+      console.log(city)
+      call2(city);}
 			return;
-		}
-	}
-}
+		}}}
 
 getCoordintes();
 function call2(city){
