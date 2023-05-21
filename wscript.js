@@ -1,9 +1,56 @@
 const api = {
     key: "ec58e4a9d54b7e7309746e98f0835185",
     base: "https://api.openweathermap.org/data/2.5/"
-  }
-  window.onload=getResults('Jamnagar');
-  
+}
+window.onload=getResults("jamnagar");
+var city;
+function getCoordintes() {
+	var options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+	function success(pos) {
+		var crd = pos.coords;
+		var lat = crd.latitude.toString();
+		var lng = crd.longitude.toString();
+		var coordinates = [lat, lng];
+		console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+		getCity(coordinates);
+		return;
+
+	}
+	function error(err) {
+		console.warn(`ERROR(${err.code}): ${err.message}`);
+	}
+
+	navigator.geolocation.getCurrentPosition(success, error, options);
+}
+function getCity(coordinates) {
+	var xhr = new XMLHttpRequest();
+	var lat = coordinates[0];
+	var lng = coordinates[1];
+  console.log(lat);
+	xhr.open('GET', "https://us1.locationiq.com/v1/reverse.php?key=pk.8605d539db394b8f3d1e4c8186edecf8&lat=" +lat + "&lon=" + lng + "&format=json", true);
+	xhr.send();
+	xhr.onreadystatechange = processRequest;
+	xhr.addEventListener("readystatechange", processRequest, false);
+
+	function processRequest(e) {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			var response = JSON.parse(xhr.responseText);
+			city = response.address.municipality;
+			console.log(city);
+      call2(city);
+			return;
+		}
+	}
+}
+
+getCoordintes();
+function call2(city){
+  window.onload=getResults(city);
+}
   const searchbox = document.querySelector('.search-box');
   searchbox.addEventListener('keypress', setQuery);
   
