@@ -30,7 +30,7 @@ function getCity(coordinates) {
 	var xhr = new XMLHttpRequest();
 	var lat = coordinates[0];
 	var lng = coordinates[1];
-  console.log(lat);
+  
 	xhr.open('GET', "https://us1.locationiq.com/v1/reverse.php?key=pk.8605d539db394b8f3d1e4c8186edecf8&lat=" +lat + "&lon=" + lng + "&format=json", true);
 	xhr.send();
 	xhr.onreadystatechange = processRequest;
@@ -39,18 +39,23 @@ function getCity(coordinates) {
 	function processRequest(e) {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			var response = JSON.parse(xhr.responseText);
-      console.log(response.address)
-			city = response.address.state_district;
+      
+			city = response.address;
+      console.log(city)
       if (city=== undefined) {
         city = response.address.municipality;
         call2(city);
       }
-			else{
-      city = response.address.state_district;
-      console.log(city)
+			else if(city=== undefined){
+      city = response.address.city;
+      
       call2(city);}
+      else{
+        city=response.address.state_district;
+      }
 			return;
-		}}}
+		}
+  }}
 
 getCoordintes();
 function call2(city){
@@ -73,6 +78,8 @@ function call2(city){
   }
   
   function displayResults (weather) {
+    console.log(weather);
+    console.log(weather.sys.sunrise);
     console.log(weather.wind.speed);
     console.log(weather.wind.gust);
     if(weather.weather[0].main=='Clear'){
@@ -111,7 +118,10 @@ function call2(city){
     temp.innerHTML = `${Math.round(weather.main.temp)}<span>°c</span>`;
   
     let weather_el = document.querySelector('.current .weather');
-    weather_el.innerText = weather.weather[0].main;
+    const word = weather.weather[0].description
+
+    const capitalized =word.charAt(0).toUpperCase()+ word.slice(1)
+    weather_el.innerText = capitalized;
 
     
     
@@ -122,11 +132,30 @@ function call2(city){
 
     let weather_cloud = document.querySelector('.current .cloudcover');
     weather_cloud.innerText =` Cloud Cover : ${weather.clouds.all}%`;
-
+    console.log(weather.wind.deg)
+    
     let windspeed = document.querySelector('.current .winds');
-    windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h \n (Gust Speed :${Math.round(weather.wind.gust*3.6)}km/h)`;
+    windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h ${getCardinalDirection(weather.wind.deg)} \n (Gust Speed :${Math.round(weather.wind.gust*3.6)}km/h)`;
+    const x=weather.sys.country
+    //if(x==="IN"){
+    var timestamp=weather.sys.sunrise
+    timestamp=timestamp*1000;
+    date2 = new Date(timestamp);
+    console.log(date2)
+    let sunrise = document.querySelector('.current .sunrise');
+    sunrise.innerText =` Sunrise Time : ${date2.getHours()}:${date2.getMinutes()}`;
+    
+    var timestamp=weather.sys.sunset
+    timestamp=timestamp*1000;
+    date2 = new Date(timestamp);
+    let sunset = document.querySelector('.current .sunset');
+    sunset.innerText =` Sunset Time : ${date2.getHours()}:${date2.getMinutes()}`;
+    //}
   }
-  
+  function getCardinalDirection(angle) {
+    const directions = ['↑ N', '↗ NE', '→ E', '↘ SE', '↓ S', '↙ SW', '← W', '↖ NW'];
+    return directions[Math.round(angle / 45) % 8];
+}
 
   function dateBuilder (d) {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
