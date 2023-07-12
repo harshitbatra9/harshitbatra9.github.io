@@ -143,13 +143,17 @@ function call2(city){
     date2 = new Date(timestamp);
     console.log(date2)
     let sunrise = document.querySelector('.current .sunrise');
-    sunrise.innerText =` Sunrise Time : ${date2.getHours()}:${date2.getMinutes()}`;
+    sunrise.innerText =` Sunrise Time : ${date2.getHours()}:${date2.getMinutes()} IST`;
     
     var timestamp=weather.sys.sunset
     timestamp=timestamp*1000;
     date2 = new Date(timestamp);
     let sunset = document.querySelector('.current .sunset');
-    sunset.innerText =` Sunset Time : ${date2.getHours()}:${date2.getMinutes()}`;
+    if(date2.getMinutes()<10){
+    var y="0"+date2.getMinutes();}
+    else
+    y=date2.getMinutes();
+    sunset.innerText =` Sunset Time : ${date2.getHours()}:${y} IST`;
     //}
   }
   function getCardinalDirection(angle) {
