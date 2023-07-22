@@ -39,22 +39,18 @@ function getCity(coordinates) {
 	function processRequest(e) {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			var response = JSON.parse(xhr.responseText);
-      
-			city = response.address;
-      console.log(city)
-      if (city=== undefined) {
-        city = response.address.municipality;
-        call2(city);
-      }
-			else if(city=== undefined){
-      city = response.address.city;
-      
-      call2(city);}
-      else{
-        city=response.address.state_district;
-      }
-			return;
+      city3=response.address;
+      console.log(city3)
+      var x=city3.state_district;
+      var first = x.split(" ").slice(0, -1).join(" ");
+      if(city3.state!='Delhi'){
+			city = city3.state;
+      call2(city);
+      city=first;
+      call2(city);
 		}
+  else
+call2('Delhi');}
   }}
 
 getCoordintes();
@@ -79,9 +75,7 @@ function call2(city){
   
   function displayResults (weather) {
     console.log(weather);
-    console.log(weather.sys.sunrise);
-    console.log(weather.wind.speed);
-    console.log(weather.wind.gust);
+  
     if(weather.weather[0].main=='Clear'){
         document.body.style.backgroundImage = "url('clear.jpg')";
         }
@@ -132,16 +126,17 @@ function call2(city){
 
     let weather_cloud = document.querySelector('.current .cloudcover');
     weather_cloud.innerText =` Cloud Cover : ${weather.clouds.all}%`;
-    console.log(weather.wind.deg)
     
+    let change=document.querySelector('.current .change');
+    change.innerText=`(Wind Direction: ${weather.wind.deg}°)`;
     let windspeed = document.querySelector('.current .winds');
     windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h ${getCardinalDirection(weather.wind.deg)} \n (Gust Speed :${Math.round(weather.wind.gust*3.6)}km/h)`;
-    const x=weather.sys.country
-    //if(x==="IN"){
+    //const x=weather.sys.country
+    //console.log(x)
+    //if(x==='IN'){
     var timestamp=weather.sys.sunrise
     timestamp=timestamp*1000;
-    date2 = new Date(timestamp);
-    console.log(date2)
+    var date2 = new Date(timestamp);
     let sunrise = document.querySelector('.current .sunrise');
     sunrise.innerText =` Sunrise Time : ${date2.getHours()}:${date2.getMinutes()} IST`;
     
@@ -154,7 +149,8 @@ function call2(city){
     else
     y=date2.getMinutes();
     sunset.innerText =` Sunset Time : ${date2.getHours()}:${y} IST`;
-    //}
+    
+    
   }
   function getCardinalDirection(angle) {
     const directions = ['↑ N', '↗ NE', '→ E', '↘ SE', '↓ S', '↙ SW', '← W', '↖ NW'];
