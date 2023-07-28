@@ -2,6 +2,7 @@ const api = {
     key: "ec58e4a9d54b7e7309746e98f0835185",
     base: "https://api.openweathermap.org/data/2.5/"
 }
+
 window.onload=getResults("jamnagar");
 var city;
 function getCoordintes() {
@@ -29,7 +30,7 @@ function getCoordintes() {
 function getCity(coordinates) {
 	var xhr = new XMLHttpRequest();
 	var lat = coordinates[0];
-	var lng = coordinates[1];
+	var lng =coordinates[1];
   
 	xhr.open('GET', "https://us1.locationiq.com/v1/reverse.php?key=pk.8605d539db394b8f3d1e4c8186edecf8&lat=" +lat + "&lon=" + lng + "&format=json", true);
 	xhr.send();
@@ -117,7 +118,10 @@ function call2(city){
     const capitalized =word.charAt(0).toUpperCase()+ word.slice(1)
     weather_el.innerText = capitalized;
 
-    
+    /*if(weather.weather[0].main=='Rain'){
+      let temp2 = document.querySelector('.current .rain');
+    temp2.innerHTML = `${(weather.rain.1h)}<span>mm in 1h</span>`;
+       }*/
     
     let feel=document.querySelector('.current .feelslike');
     feel.innerText=`Feels like ${Math.round(weather.main.feels_like)}°c`;
@@ -130,25 +134,47 @@ function call2(city){
     let change=document.querySelector('.current .change');
     change.innerText=`(Wind Direction: ${weather.wind.deg}°)`;
     let windspeed = document.querySelector('.current .winds');
+    if(weather.wind.gust>0)
     windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h ${getCardinalDirection(weather.wind.deg)} \n (Gust Speed :${Math.round(weather.wind.gust*3.6)}km/h)`;
+    else
+    windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h ${getCardinalDirection(weather.wind.deg)}`;
     //const x=weather.sys.country
     //console.log(x)
     //if(x==='IN'){
+      
     var timestamp=weather.sys.sunrise
+    timestamp=timestamp-19800+weather.timezone
     timestamp=timestamp*1000;
+    
     var date2 = new Date(timestamp);
     let sunrise = document.querySelector('.current .sunrise');
-    sunrise.innerText =` Sunrise Time : ${date2.getHours()}:${date2.getMinutes()} IST`;
+    if(date2.getMinutes()<10){
+      var y='0'+date2.getMinutes();}
+      else
+      y=date2.getMinutes();
+    sunrise.innerText =` Sunrise Time : ${date2.getHours()}:${y} `;
     
     var timestamp=weather.sys.sunset
+    timestamp=timestamp-19800+weather.timezone
+    var date4=new Date(weather.timezone)
+    
+    hrs=Math.floor(date4/3600);
+    min2=date4%3600;
+    min2=min2/60;
+    console.log(hrs)
+    console.log(min2)
+    if(min2==0)
+    min2='0'+min2;
+    if(hrs>=0)
+    hrs='+'+hrs
     timestamp=timestamp*1000;
     date2 = new Date(timestamp);
     let sunset = document.querySelector('.current .sunset');
     if(date2.getMinutes()<10){
-    var y="0"+date2.getMinutes();}
+    var y='0'+date2.getMinutes();}
     else
     y=date2.getMinutes();
-    sunset.innerText =` Sunset Time : ${date2.getHours()}:${y} IST`;
+    sunset.innerText =` Sunset Time : ${date2.getHours()}:${y} (GMT ${hrs}:${min2})`;
     
     
   }
