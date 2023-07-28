@@ -78,13 +78,20 @@ function call2(city){
     console.log(weather);
   
     if(weather.weather[0].main=='Clear'){
-        document.body.style.backgroundImage = "url('clear.jpg')";
+        document.body.style.backgroundImage = "url('clear.webp')";
         }
     else if(weather.weather[0].main=='Clouds'){
-            document.body.style.backgroundImage = "url('clouds.jpg')";
-            }
+      if(weather.clouds.all>90){
+            document.body.style.backgroundImage = "url('clouds3.jpg')";
+      }
+      else if(weather.clouds.all>70){
+        document.body.style.backgroundImage = "url('clouds2.jpg')";}
+      else
+      document.body.style.backgroundImage = "url('clouds.jpg')";
+      }
+    
     else if(weather.weather[0].main=='Thunderstorm'){
-    document.body.style.backgroundImage = "url('thunderstorm.jpg')";
+    document.body.style.backgroundImage = "url('thunderstorm2.jpg')";
     }
     else if(weather.weather[0].main=='Drizzle'){
         document.body.style.backgroundImage = "url('rain.jpg')";
@@ -104,7 +111,7 @@ function call2(city){
     }
     let city = document.querySelector('.location .city');
     city.innerText = `${weather.name}, ${weather.sys.country}`;
-  
+    
     let now = new Date();
     let date = document.querySelector('.location .date');
     date.innerText = dateBuilder(now);
@@ -174,7 +181,7 @@ function call2(city){
     var y='0'+date2.getMinutes();}
     else
     y=date2.getMinutes();
-    sunset.innerText =` Sunset Time : ${date2.getHours()}:${y} (GMT ${hrs}:${min2})`;
+    sunset.innerText =` Sunset Time : ${date2.getHours()}:${y} \n(GMT ${hrs}:${min2})`;
     
     
   }

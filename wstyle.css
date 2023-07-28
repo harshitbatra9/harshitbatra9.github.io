@@ -6,7 +6,7 @@
   
   body {
     font-family: 'montserrat', sans-serif;
-    background-image: url('thunderstorm.webp');
+    background-image: url('thunderstorm2.jpg');
     background-size: cover;
     background-position: center;
     
@@ -35,7 +35,7 @@
     border: none;
     outline: none;
     background-color: rgba(183, 173, 173, 0.3);
-    border-radius: 16px 0px 16px 0px;
+    border-radius: 8px 8px 8px 8px;
     border-bottom: 3px solid #3754ab;
     
     color: #313131;
