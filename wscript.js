@@ -66,7 +66,6 @@ function call2(city){
       getResults(searchbox.value);
     }
   }
-  
   function getResults (query) {
     fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
       .then(weather => {
