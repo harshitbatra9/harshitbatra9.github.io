@@ -77,7 +77,7 @@ function call2(city){
     console.log(weather);
   
     if(weather.weather[0].main=='Clear'){
-        document.body.style.backgroundImage = "url('clear.webp')";
+        document.body.style.backgroundImage = "url('clear.jpg')";
         }
     else if(weather.weather[0].main=='Clouds'){
       if(weather.clouds.all>90){

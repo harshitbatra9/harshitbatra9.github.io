@@ -10,7 +10,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+ /* background-attachment: fixed;*/
 }
 
 .app-wrap {
@@ -62,9 +62,7 @@ main {
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  width: 300px;
-}
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);}
 
 .location .city {
   color: #FFF;
