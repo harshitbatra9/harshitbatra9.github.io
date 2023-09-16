@@ -3,7 +3,7 @@ const api = {
     base: "https://api.openweathermap.org/data/2.5/"
 }
 
-window.onload=getResults("jamnagar");
+
 var city;
 function getCoordintes() {
 	var options = {
@@ -23,7 +23,8 @@ function getCoordintes() {
 	}
 	function error(err) {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
-	}
+    call2("jamnagar");
+  }
 
 	navigator.geolocation.getCurrentPosition(success, error, options);
 }
@@ -43,22 +44,23 @@ function getCity(coordinates) {
 	xhr.onreadystatechange = processRequest;
 	xhr.addEventListener("readystatechange", processRequest, false);
 
-	function processRequest(e) {
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			var response = JSON.parse(xhr.responseText);
-      city3=response.address;
-      console.log(city3)
-      var x=city3.state_district;
-      var first = x.split(" ").slice(0, -1).join(" ");
-      if(city3.state!='Delhi'){
-			city = city3.state;
-      call2(city);
-      city=first;
-      call2(city);
-		}
-  else
-call2('Delhi');}
-  }}
+  function processRequest(e) {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        var response = JSON.parse(xhr.responseText);
+        city3 = response.address;
+        console.log(city3);
+        var district = city3.city || city3.town || city3.village;
+        if (district) {
+            city = district;
+            call2(city);
+        } else {
+            // District not found, use state
+            city = city3.state;
+            call2(city);
+        }
+    }
+}
+}
 
 getCoordintes();
 function call2(city){
@@ -100,43 +102,51 @@ function call2(city){
     errorMessageElement.innerText = ''; // Clear the error message
     errorMessageElement.style.display = 'none'; // Hide the error message
   }
-  
-  
-  function displayResults (weather) {
-    console.log(weather);
-  
-    if(weather.weather[0].main=='Clear'){
-        document.body.style.backgroundImage = "url('clear.jpg')";
-        }
-    else if(weather.weather[0].main=='Clouds'){
-      if(weather.clouds.all>90){
-            document.body.style.backgroundImage = "url('clouds3.jpg')";
-      }
-      else if(weather.clouds.all>70){
-        document.body.style.backgroundImage = "url('clouds2.jpg')";}
-      else
-      document.body.style.backgroundImage = "url('clouds.jpg')";
-      }
-    
-    else if(weather.weather[0].main=='Thunderstorm'){
-    document.body.style.backgroundImage = "url('thunderstorm2.jpg')";
-    }
-    else if(weather.weather[0].main=='Drizzle'){
-        document.body.style.backgroundImage = "url('rain.jpg')";
-        }
-    else if(weather.weather[0].main=='Rain'){
-        document.body.style.backgroundImage = "url('rain.jpg')";
-         }
-    else if(weather.weather[0].main=='Snow'){
-            document.body.style.backgroundImage = "url('snow.jpg')";
-            }
-    else if(weather.weather[0].main=='Haze'){
-            document.body.style.backgroundImage = "url('haze.jpg')";
-            }
+  const imageUrls = [
+    'clear.jpg',
+    'clouds.jpg',
+    'clouds2.jpg',
+    'clouds3.jpg',
+    'thunderstorm2.jpg',
+    'rain.jpg',
+    'snow.jpg',
+    'haze.jpg',
+    'fog.jpg',
+    // Add URLs for other background images here
+];
+const preloadedImages = [];
 
-    else{
-        document.body.style.backgroundImage = "url('fog.jpg')";
-    }
+imageUrls.forEach((imageUrl) => {
+    const img = new Image();
+    img.src = imageUrl;
+    preloadedImages.push(img);
+});
+  
+  
+function displayResults(weather) {
+  console.log(weather);
+
+  // Map weather conditions to background image URLs
+  const backgroundImageUrls = {
+      'Clear': 'clear.jpg',
+      'Clouds': weather.clouds.all > 90 ? 'clouds3.jpg' : (weather.clouds.all > 70 ? 'clouds2.jpg' : 'clouds.jpg'),
+      'Thunderstorm': 'thunderstorm2.jpg',
+      'Drizzle': 'rain.jpg',
+      'Rain': 'rain.jpg',
+      'Snow': 'snow.jpg',
+      'Haze': 'haze.jpg',
+      'Fog': 'fog.jpg',
+  };
+
+  // Get the background image URL based on weather condition
+  const backgroundUrl = backgroundImageUrls[weather.weather[0].main];
+
+  // Set the background image using the preloaded image
+  document.body.style.backgroundImage = `url('${backgroundUrl}')`;
+
+  // ... Rest of your code to display weather information
+
+
     let city = document.querySelector('.location .city');
     city.innerText = `${weather.name}, ${weather.sys.country}`;
     
