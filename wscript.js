@@ -27,6 +27,12 @@ function getCoordintes() {
 
 	navigator.geolocation.getCurrentPosition(success, error, options);
 }
+function displayError(message) {
+  const errorMessageElement = document.getElementById('error-message');
+  errorMessageElement.innerText = message;
+  errorMessageElement.style.display = 'block'; // Show the error message
+}
+
 function getCity(coordinates) {
 	var xhr = new XMLHttpRequest();
 	var lat = coordinates[0];
@@ -66,12 +72,35 @@ function call2(city){
       getResults(searchbox.value);
     }
   }
-  function getResults (query) {
+  function getResults(query) {
+    // Clear any previous error messages
+    clearError();
+  
     fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
-      .then(weather => {
+      .then((weather) => {
         return weather.json();
-      }).then(displayResults);
+      })
+      .then((data) => {
+        if (data.cod === '404') {
+          // City not found, display an error message
+          displayError('City not found. Please check the city name and try again.');
+        } else {
+          // City found, display weather data
+          displayResults(data);
+        }
+      })
+      .catch((error) => {
+        // Handle other errors, e.g., network issues
+        displayError('An error occurred while fetching weather data. Please try again later.');
+      });
   }
+  
+  function clearError() {
+    const errorMessageElement = document.getElementById('error-message');
+    errorMessageElement.innerText = ''; // Clear the error message
+    errorMessageElement.style.display = 'none'; // Hide the error message
+  }
+  
   
   function displayResults (weather) {
     console.log(weather);

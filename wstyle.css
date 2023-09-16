@@ -98,6 +98,17 @@ main {
 .current .temp span {
   font-weight: 500;
 }
+.error-message {
+  background-color :rgba(234, 56, 16, 0.554) ;/* Red background color */
+  color: white; /* White text color */
+  padding: 10px; /* Add some padding to the message */
+  font-size: 16px; /* Font size */
+  text-align: center; /* Center-align the text */
+  display: none; /* Initially hide the error message */
+  margin-bottom: 10px; /* Add some space below the message */
+  border-radius: 10px; /* Add rounded corners to the message box */
+}
+
 
 .current .weather {
   color: #e4e5e9;
