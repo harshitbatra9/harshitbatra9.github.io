@@ -4,6 +4,8 @@ const api = {
 }
 
 window.onload=getResults("jamnagar");
+
+
 var city;
 function getCoordintes() {
 	var options = {
@@ -24,6 +26,7 @@ function getCoordintes() {
 	function error(err) {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
     call2("jamnagar");
+    
   }
 
 	navigator.geolocation.getCurrentPosition(success, error, options);
@@ -136,6 +139,7 @@ function displayResults(weather) {
       'Snow': 'snow.jpg',
       'Haze': 'haze.jpg',
       'Fog': 'fog.jpg',
+      'Mist': 'fog.jpg',
   };
 
   // Get the background image URL based on weather condition
@@ -154,6 +158,7 @@ function displayResults(weather) {
     let date = document.querySelector('.location .date');
     date.innerText = dateBuilder(now);
   
+
     let temp = document.querySelector('.current .temp');
     temp.innerHTML = `${Math.round(weather.main.temp)}<span>°c</span>`;
   
@@ -167,7 +172,16 @@ function displayResults(weather) {
       let temp2 = document.querySelector('.current .rain');
     temp2.innerHTML = `${(weather.rain.1h)}<span>mm in 1h</span>`;
        }*/
-    
+       if (weather.rain && weather.rain['1h']){
+        const totalRainfallToday = weather.rain['1h'];
+        let rainfallElement = document.querySelector('.current .rainfall2');
+        rainfallElement.innerText = `Total Rain in last 1 Hour: ${totalRainfallToday} mm`;
+      }
+      else{
+        let rainfallElement = document.querySelector('.current .rainfall2');
+        rainfallElement.innerText = ``;
+      }
+      
     let feel=document.querySelector('.current .feelslike');
     feel.innerText=`Feels like ${Math.round(weather.main.feels_like)}°c`;
     let hum=document.querySelector('.current .humidity');
@@ -240,3 +254,5 @@ function displayResults(weather) {
     return `${day} ${date} ${month} ${year} `;
     
   }
+  
+    
