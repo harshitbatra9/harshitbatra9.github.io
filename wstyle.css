@@ -112,7 +112,7 @@ main {
 
 .current .weather {
   color: #e4e5e9;
-  font-size: 32px;
+  font-size: 35px;
   font-weight: 500;
   font-style: italic;
   background-color: rgba(0, 0, 0, 0.3);
@@ -120,6 +120,7 @@ main {
   margin: 10px 0px 20px;
   text-shadow: 0px 3px rgba(234, 241, 231, 0.0);
   padding: 20px 10px;
+  display: inline-block;
 }
 
 .feelslike,
@@ -127,8 +128,8 @@ main {
 .current .cloudcover,
 .current .winds,
 .current .sunrise,
-.current .sunset,
-.current .rainfall2 {
+.current .sunset
+ {
   color: #FFF;
   font-size: 20px;
   font-weight: 500;
@@ -139,7 +140,17 @@ main {
   border-radius: 8px;
   display: inline-block;
 }
+.rainfall2{color: #FFF;
+  font-size: 20px;
+  font-weight: 500;
+  text-shadow: 0px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: inline-block;
 
+}
 .feelslike {
   margin-right: 10px;
 }
@@ -162,4 +173,4 @@ main {
   font-weight: 50;
   text-align: end;
 }
-
+/* Add these styles to your CSS file */
