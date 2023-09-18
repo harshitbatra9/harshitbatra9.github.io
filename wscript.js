@@ -105,7 +105,7 @@ const imageUrls = [
   'clouds2.jpg',
   'clouds3.jpg',
   'thunderstorm2.jpg',
-  'rain.jpg',
+  'rain2.jpg',
   'snow.jpg',
   'haze.jpg',
   'fog.jpg',
@@ -151,11 +151,11 @@ document.body.style.backgroundImage = `url('${backgroundUrl}')`;
   let temp = document.querySelector('.current .temp');
   temp.innerHTML = `${Math.round(weather.main.temp)}<span>°c</span>`;
 
-  let weather_el = document.querySelector('.current .weather');
+  let weather_el = document.querySelector('.current .weather span');
   const word = weather.weather[0].description
 
   const capitalized =word.charAt(0).toUpperCase()+ word.slice(1)
-  weather_el.innerText = capitalized;
+  weather_el.innerText  =`${capitalized}`;
 
   /*if(weather.weather[0].main=='Rain'){
     let temp2 = document.querySelector('.current .rain');
