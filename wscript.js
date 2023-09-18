@@ -67,7 +67,7 @@ searchbox.addEventListener('keypress', setQuery);
 function setQuery(evt) {
   if (evt.keyCode == 13) {
     getResults2(searchbox.value);
-    showHourlyWeatherForCity(searchbox.value, 'today');
+    
   }
 }
 function getResults2(query) {
@@ -84,7 +84,7 @@ function getResults2(query) {
       } else {
         
         displayResults(data);
-        showHourlyWeather('today');
+        showHourlyWeatherForCity(query, 'today');
       }
     })
     .catch((error) => {
@@ -107,7 +107,7 @@ const imageUrls = [
   'clouds2.jpg',
   'clouds3.jpg',
   'thunderstorm2.jpg',
-  'rain2.jpg',
+  'rain1.jpg',
   'snow.jpg',
   'haze.jpg',
   'fog.jpg',
@@ -129,8 +129,8 @@ const backgroundImageUrls = {
     'Clear': 'clear.jpg',
     'Clouds': weather.clouds.all > 90 ? 'clouds3.jpg' : (weather.clouds.all > 70 ? 'clouds2.jpg' : 'clouds.jpg'),
     'Thunderstorm': 'thunderstorm2.jpg',
-    'Drizzle': 'rain.jpg',
-    'Rain': 'rain.jpg',
+    'Drizzle': 'rain1.jpg',
+    'Rain': 'rain1.jpg',
     'Snow': 'snow.jpg',
     'Haze': 'haze.jpg',
     'Fog': 'fog.jpg',
@@ -279,14 +279,19 @@ function showHourlyWeatherForCity(city, day) {
   const forecastUrl = `${api.base}forecast?q=${city}&units=metric&APPID=${api.key}`;
 
   fetch(forecastUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      const hourlyData = filterHourlyData(data.list, day);
-      displayHourlyWeather(hourlyData);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  .then((response) => response.json())
+  .then((data) => {
+    const cityTimeZoneOffset = data.city.timezone;
+    const adjustedHourlyData = adjustTimestamps(data.list, cityTimeZoneOffset);
+
+    // Call filterHourlyData with the adjusted data
+    const hourlyData = filterHourlyData(adjustedHourlyData, day);
+
+    displayHourlyWeather(hourlyData);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 }
 function showHourlyWeather(day) {
   const forecastUrl = `${api.base}forecast?lat=${window.lat}&lon=${window.lon}&units=metric&APPID=${api.key}`;
@@ -294,13 +299,26 @@ function showHourlyWeather(day) {
   fetch(forecastUrl)
     .then((response) => response.json())
     .then((data) => {
-      const hourlyData = filterHourlyData(data.list, day);
+      const cityTimeZoneOffset = data.city.timezone;
+      const adjustedHourlyData = adjustTimestamps(data.list, cityTimeZoneOffset);
+
+      // Call filterHourlyData with the adjusted data
+      const hourlyData = filterHourlyData(adjustedHourlyData, day);
       
       displayHourlyWeather(hourlyData);
     })
     .catch((error) => {
       console.error(error);
     });
+}
+function adjustTimestamps(hourlyData, timeZoneOffset) {
+  return hourlyData.map((entry) => {
+    
+    const adjustedTimestamp = entry.dt - 19800 + timeZoneOffset;
+  
+    entry.dt = adjustedTimestamp;
+    return entry;
+  });
 }
 
 function filterHourlyData(hourlyData, day) {
@@ -353,6 +371,7 @@ function displayHourlyWeather(hourlyData) {
   hourlyData.forEach((entry) => {
     const date = new Date(entry.dt * 1000);
     const hour = date.getHours();
+    
     const temperature = entry.main.temp;
     const description = entry.weather[0].description;
     const rainVolume = entry.rain ? entry.rain['3h'] || 0 : 0; // Check if rain data is available

@@ -195,6 +195,11 @@ main {
   text-align: center;
 }
 
+.forecast-buttons button:focus,
+.forecast-buttons button:active {
+  background-color: rgba(157, 102, 211, 0.6);
+ 
+}
 .forecast-buttons button:hover {
   background-color: rgba(0, 0, 0, 0.4);
   color: white;
