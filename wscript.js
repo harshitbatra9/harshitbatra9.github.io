@@ -13,19 +13,17 @@ var options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0
-};
-function success(pos) {
-    var crd = pos.coords;
-    var lat = crd.latitude.toString();
-    var lon = crd.longitude.toString();
-    var coordinates = [lat, lon];
-    console.log(`Latitude: ${lat}, Longitude: ${lon}`);
-    
-    // Call the getResults function with the latitude and longitude
-    getResults(lat, lon);
-    getForecast(lat, lon);
+};  function success(pos) {
+  var crd = pos.coords;
+  var lat = crd.latitude.toString();
+  var lon = crd.longitude.toString();
 
+  window.lat = lat;
+  window.lon = lon;
+  getResults(lat, lon);
+  
 }
+
 function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     call2("jamnagar");
@@ -34,7 +32,7 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(success, error, options);
 }
 function getResults(lat, lon) {
-// Clear any previous error messages
+
 clearError();
 fetch(`${api.base}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${api.key}`)
     .then((weather) => {
@@ -42,7 +40,7 @@ fetch(`${api.base}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${api.key}`)
     })
     .then((data) => {
         if (data.cod === '404') {
-            // City not found, display an error message
+      
             displayError('City not found. Please check the city name and try again.');
         } else {
             // City found, display weather data
@@ -67,11 +65,10 @@ searchbox.addEventListener('keypress', setQuery);
 function setQuery(evt) {
   if (evt.keyCode == 13) {
     getResults2(searchbox.value);
-    getForecast2(searchbox.value);
+    showHourlyWeatherForCity(searchbox.value, 'today');
   }
 }
 function getResults2(query) {
-  // Clear any previous error messages
   clearError();
 
   fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
@@ -80,18 +77,20 @@ function getResults2(query) {
     })
     .then((data) => {
       if (data.cod === '404') {
-        // City not found, display an error message
+        
         displayError('City not found. Please check the city name and try again.');
       } else {
-        // City found, display weather data
+        
         displayResults(data);
+        showHourlyWeather('today');
       }
     })
     .catch((error) => {
-      // Handle other errors, e.g., network issues
+   
       displayError('An error occurred eather data. Please try again later.');
     });
 }
+
 
 
 
@@ -110,7 +109,7 @@ const imageUrls = [
   'snow.jpg',
   'haze.jpg',
   'fog.jpg',
-  // Add URLs for other background images here
+ 
 ];
 const preloadedImages = [];
 
@@ -124,7 +123,6 @@ imageUrls.forEach((imageUrl) => {
 function displayResults(weather) {
 console.log(weather);
 
-// Map weather conditions to background image URLs
 const backgroundImageUrls = {
     'Clear': 'clear.jpg',
     'Clouds': weather.clouds.all > 90 ? 'clouds3.jpg' : (weather.clouds.all > 70 ? 'clouds2.jpg' : 'clouds.jpg'),
@@ -136,14 +134,10 @@ const backgroundImageUrls = {
     'Fog': 'fog.jpg',
     'Mist': 'fog.jpg',
 };
-
-// Get the background image URL based on weather condition
 const backgroundUrl = backgroundImageUrls[weather.weather[0].main];
 
-// Set the background image using the preloaded image
 document.body.style.backgroundImage = `url('${backgroundUrl}')`;
 
-// ... Rest of your code to display weather information
 
 
   let city = document.querySelector('.location .city');
@@ -192,10 +186,7 @@ document.body.style.backgroundImage = `url('${backgroundUrl}')`;
   windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h ${getCardinalDirection(weather.wind.deg)} \n (Gust Speed :${Math.round(weather.wind.gust*3.6)}km/h)`;
   else
   windspeed.innerText =` Wind Speed : ${Math.round(weather.wind.speed*3.6)}km/h ${getCardinalDirection(weather.wind.deg)}`;
-  //const x=weather.sys.country
-  //console.log(x)
-  //if(x==='IN'){
-    
+
   var timestamp=weather.sys.sunrise
   timestamp=timestamp-19800+weather.timezone
   timestamp=timestamp*1000;
@@ -249,5 +240,155 @@ function dateBuilder (d) {
   return `${day} ${date} ${month} ${year} `;
   
 }
+// Add event listeners for the buttons
+const todayButton = document.getElementById('today-button');
+const tomorrowButton = document.getElementById('tomorrow-button');
+const dayAfterButton = document.getElementById('day-after-button');
+
+todayButton.addEventListener('click', () => {
+  if (searchbox.value) {
+    showHourlyWeatherForCity(searchbox.value,'today');
+  } else {
+    showHourlyWeather('today');
+  }
+});
+
+tomorrowButton.addEventListener('click', () => {
+  if (searchbox.value) {
+    showHourlyWeatherForCity(searchbox.value,'tomorrow');}
+  else{
+    showHourlyWeather('tomorrow');}
+  
+});
+
+dayAfterButton.addEventListener('click', () => {
+  if (searchbox.value) {
+
+    showHourlyWeatherForCity(searchbox.value,'dayAfter');
+  } else {
+
+    showHourlyWeather('dayAfter');
+  }
+});
+
+function showHourlyWeatherForCity(city, day) {
+  
+
+  const forecastUrl = `${api.base}forecast?q=${city}&units=metric&APPID=${api.key}`;
+
+  fetch(forecastUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      const hourlyData = filterHourlyData(data.list, day);
+      displayHourlyWeather(hourlyData);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+function showHourlyWeather(day) {
+  const forecastUrl = `${api.base}forecast?lat=${window.lat}&lon=${window.lon}&units=metric&APPID=${api.key}`;
+  
+  fetch(forecastUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      const hourlyData = filterHourlyData(data.list, day);
+      
+      displayHourlyWeather(hourlyData);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function filterHourlyData(hourlyData, day) {
+  const now = new Date();
+  
+  const filteredData = [];
+
+  for (const entry of hourlyData) {
+    const entryDate = new Date(entry.dt * 1000);
+    if (isSameDay(entryDate, now, day)) {
+      filteredData.push(entry);
+    }
+  }
+
+  return filteredData;
+}
+
+// Function to check if two dates are on the same day
+function isSameDay(date1, date2, day) {
+  if (day === 'today') {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  } else if (day === 'tomorrow') {
+    const tomorrow = new Date(date2.getTime() + 24 * 60 * 60 * 1000);
+    return (
+      date1.getFullYear() === tomorrow.getFullYear() &&
+      date1.getMonth() === tomorrow.getMonth() &&
+      date1.getDate() === tomorrow.getDate()
+    );
+  } else if (day === 'dayAfter') {
+    const dayAfter = new Date(date2.getTime() + 2 * 24 * 60 * 60 * 1000);
+    return (
+      date1.getFullYear() === dayAfter.getFullYear() &&
+      date1.getMonth() === dayAfter.getMonth() &&
+      date1.getDate() === dayAfter.getDate()
+    );
+  }
+
+  return false;
+}
+
+// Function to display hourly weather data
+function displayHourlyWeather(hourlyData) {
+  const hourlyWeatherContainer = document.getElementById('hourly-weather');
+  hourlyWeatherContainer.innerHTML = '';
+
+  hourlyData.forEach((entry) => {
+    const date = new Date(entry.dt * 1000);
+    const hour = date.getHours();
+    const temperature = entry.main.temp;
+    const description = entry.weather[0].description;
+    const rainVolume = entry.rain ? entry.rain['3h'] || 0 : 0; // Check if rain data is available
+
+    const hourlyWeatherItem = document.createElement('div');
+    hourlyWeatherItem.classList.add('hourly-data');
+
+    const hourElement = document.createElement('div');
+    hourElement.classList.add('hour');
+    hourElement.textContent = `${hour}:00`;
+
+    const temperatureElement = document.createElement('div');
+    temperatureElement.classList.add('temperature');
+    temperatureElement.textContent = `${Math.round(temperature)}°C`;
+
+    const descriptionElement = document.createElement('div');
+    descriptionElement.classList.add('description');
+    descriptionElement.textContent = description;
 
   
+
+    hourlyWeatherItem.appendChild(hourElement);
+    hourlyWeatherItem.appendChild(temperatureElement);
+    hourlyWeatherItem.appendChild(descriptionElement);
+    if (rainVolume > 0) { // Only add rain information if there is rain
+      const rainElement = document.createElement('div');
+      rainElement.classList.add('rain');
+      rainElement.textContent = `Rain: ${rainVolume} mm`; // Display rain in mm
+      hourlyWeatherItem.appendChild(rainElement); // Add rain information to the hourly item
+    }
+
+    hourlyWeatherContainer.appendChild(hourlyWeatherItem);
+  });
+
+  hourlyWeatherContainer.classList.remove('hidden');
+}
+
+// Hide the hourly weather container by default
+const hourlyWeatherContainer = document.getElementById('hourly-weather');
+hourlyWeatherContainer.classList.add('hidden');
+
