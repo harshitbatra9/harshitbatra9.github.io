@@ -27,6 +27,8 @@ var options = {
 function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     call2("jamnagar");
+    showHourlyWeatherForCity("jamnagar", 'today');
+    searchbox.value='jamnagar';
 }
 
 navigator.geolocation.getCurrentPosition(success, error, options);
