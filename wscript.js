@@ -47,6 +47,7 @@ fetch(`${api.base}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${api.key}`)
         } else {
             
             displayResults(data);
+            showHourlyWeather('today');
         }
     })
     
