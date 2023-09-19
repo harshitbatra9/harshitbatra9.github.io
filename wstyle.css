@@ -176,19 +176,27 @@ main {
   margin-top: 20px;
 }
 .forecast-buttons{
-  font-size: 16px;
+  font-size: 26px;
   font-weight: 500;
   color: bisque;
+  gap:20px;
+  border: 10px;
   
+}
+.forecast-buttons span{
+display: inline-block;
+border-bottom: 20px;
+ 
 }
 .forecast-buttons button {
   flex: 1; /* Equal width for each button */
   padding: 10px 20px;
   font-size: 16px;
-  font-weight: 500;
-  color: bisque;
+  font-weight: 400;
+  
   background-color: rgba(0, 0, 0, 0.2);
-  border: none;
+  border:20px 40px;
+  border-color:rgba(255,255,255,0.5);
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
@@ -224,6 +232,6 @@ main {
 }
 
 .description {
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 5px;
 }

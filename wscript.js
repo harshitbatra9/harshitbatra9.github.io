@@ -45,7 +45,7 @@ fetch(`${api.base}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${api.key}`)
       
             displayError('City not found. Please check the city name and try again.');
         } else {
-            // City found, display weather data
+            
             displayResults(data);
         }
     })
@@ -55,7 +55,7 @@ fetch(`${api.base}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${api.key}`)
 function displayError(message) {
 const errorMessageElement = document.getElementById('error-message');
 errorMessageElement.innerText = message;
-errorMessageElement.style.display = 'block'; // Show the error message
+errorMessageElement.style.display = 'block'; 
 }
 
 function call2(city){
@@ -98,8 +98,8 @@ function getResults2(query) {
 
 function clearError() {
   const errorMessageElement = document.getElementById('error-message');
-  errorMessageElement.innerText = ''; // Clear the error message
-  errorMessageElement.style.display = 'none'; // Hide the error message
+  errorMessageElement.innerText = ''; 
+  errorMessageElement.style.display = 'none'; 
 }
 const imageUrls = [
   'clear.jpg',
@@ -284,7 +284,6 @@ function showHourlyWeatherForCity(city, day) {
     const cityTimeZoneOffset = data.city.timezone;
     const adjustedHourlyData = adjustTimestamps(data.list, cityTimeZoneOffset);
 
-    // Call filterHourlyData with the adjusted data
     const hourlyData = filterHourlyData(adjustedHourlyData, day);
 
     displayHourlyWeather(hourlyData);
@@ -302,7 +301,6 @@ function showHourlyWeather(day) {
       const cityTimeZoneOffset = data.city.timezone;
       const adjustedHourlyData = adjustTimestamps(data.list, cityTimeZoneOffset);
 
-      // Call filterHourlyData with the adjusted data
       const hourlyData = filterHourlyData(adjustedHourlyData, day);
       
       displayHourlyWeather(hourlyData);
@@ -335,8 +333,6 @@ function filterHourlyData(hourlyData, day) {
 
   return filteredData;
 }
-
-// Function to check if two dates are on the same day
 function isSameDay(date1, date2, day) {
   if (day === 'today') {
     return (
@@ -362,8 +358,6 @@ function isSameDay(date1, date2, day) {
 
   return false;
 }
-
-// Function to display hourly weather data
 function displayHourlyWeather(hourlyData) {
   const hourlyWeatherContainer = document.getElementById('hourly-weather');
   hourlyWeatherContainer.innerHTML = '';
@@ -390,9 +384,6 @@ function displayHourlyWeather(hourlyData) {
     const descriptionElement = document.createElement('div');
     descriptionElement.classList.add('description');
     descriptionElement.textContent = description;
-
-  
-
     hourlyWeatherItem.appendChild(hourElement);
     hourlyWeatherItem.appendChild(temperatureElement);
     hourlyWeatherItem.appendChild(descriptionElement);
@@ -408,8 +399,6 @@ function displayHourlyWeather(hourlyData) {
 
   hourlyWeatherContainer.classList.remove('hidden');
 }
-
-// Hide the hourly weather container by default
 const hourlyWeatherContainer = document.getElementById('hourly-weather');
 hourlyWeatherContainer.classList.add('hidden');
 
