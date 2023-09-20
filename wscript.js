@@ -243,14 +243,31 @@ function dateBuilder (d) {
   return `${day} ${date} ${month} ${year} `;
   
 }
-// Add event listeners for the buttons
 const todayButton = document.getElementById('today-button');
 const tomorrowButton = document.getElementById('tomorrow-button');
 const dayAfterButton = document.getElementById('day-after-button');
+const dayAfterTomorrowButton = document.getElementById('day-after-tomorrow-button');
+
+// Helper function to format date as dd/mm
+function formatDateToDdMm(date) {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+  return `${day}/${month}`;
+}
+
+// Set the initial date text for "Day After" and "Day After Tomorrow" buttons
+const today = new Date();
+const dayAfterDate = new Date(today.getTime() + 2*24 * 60 * 60 * 1000);
+const dayAfterTomorrowDate = new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000);
+
+// Update the button text directly
+dayAfterButton.textContent = ` ${formatDateToDdMm(dayAfterDate)}`;
+dayAfterTomorrowButton.textContent = `${formatDateToDdMm(dayAfterTomorrowDate)}`;
+
 
 todayButton.addEventListener('click', () => {
   if (searchbox.value) {
-    showHourlyWeatherForCity(searchbox.value,'today');
+    showHourlyWeatherForCity(searchbox.value, 'today');
   } else {
     showHourlyWeather('today');
   }
@@ -258,21 +275,28 @@ todayButton.addEventListener('click', () => {
 
 tomorrowButton.addEventListener('click', () => {
   if (searchbox.value) {
-    showHourlyWeatherForCity(searchbox.value,'tomorrow');}
-  else{
-    showHourlyWeather('tomorrow');}
-  
+    showHourlyWeatherForCity(searchbox.value, 'tomorrow');
+  } else {
+    showHourlyWeather('tomorrow');
+  }
 });
 
 dayAfterButton.addEventListener('click', () => {
   if (searchbox.value) {
-
-    showHourlyWeatherForCity(searchbox.value,'dayAfter');
+    showHourlyWeatherForCity(searchbox.value, 'dayAfter');
   } else {
-
     showHourlyWeather('dayAfter');
   }
 });
+
+dayAfterTomorrowButton.addEventListener('click', () => {
+  if (searchbox.value) {
+    showHourlyWeatherForCity(searchbox.value, 'dayAfterTomorrow');
+  } else {
+    showHourlyWeather('dayAfterTomorrow');
+  }
+});
+
 
 function showHourlyWeatherForCity(city, day) {
   
@@ -313,8 +337,10 @@ function showHourlyWeather(day) {
 function adjustTimestamps(hourlyData, timeZoneOffset) {
   return hourlyData.map((entry) => {
     
-    const adjustedTimestamp = entry.dt - 19800 + timeZoneOffset;
-  
+    var adjustedTimestamp = entry.dt - 19800 + timeZoneOffset;
+    
+    adjustedTimestamp=new Date(adjustedTimestamp);
+    
     entry.dt = adjustedTimestamp;
     return entry;
   });
@@ -334,6 +360,7 @@ function filterHourlyData(hourlyData, day) {
 
   return filteredData;
 }
+
 function isSameDay(date1, date2, day) {
   if (day === 'today') {
     return (
@@ -354,6 +381,14 @@ function isSameDay(date1, date2, day) {
       date1.getFullYear() === dayAfter.getFullYear() &&
       date1.getMonth() === dayAfter.getMonth() &&
       date1.getDate() === dayAfter.getDate()
+    );
+  }
+  else if (day === 'dayAfterTomorrow') {
+    const dayAfterTomorrow = new Date(date2.getTime() + 3 * 24 * 60 * 60 * 1000);
+    return (
+      date1.getFullYear() === dayAfterTomorrow.getFullYear() &&
+      date1.getMonth() === dayAfterTomorrow.getMonth() &&
+      date1.getDate() === dayAfterTomorrow.getDate()
     );
   }
 
@@ -400,6 +435,8 @@ function displayHourlyWeather(hourlyData) {
 
   hourlyWeatherContainer.classList.remove('hidden');
 }
+
+// Hide the hourly weather container by default
 const hourlyWeatherContainer = document.getElementById('hourly-weather');
 hourlyWeatherContainer.classList.add('hidden');
 
