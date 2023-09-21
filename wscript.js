@@ -6,6 +6,7 @@ const api = {
 window.onload=getResults2("jamnagar");
 
 getCoordintes();
+
 const imageObjects = [];
 const imageUrls2 = ['rain1.png', 'rain2.png', 'cloud1.png', 'cloud2.png', 'snow.png', 'wind.png'];
 function preloadImages(urls) {
