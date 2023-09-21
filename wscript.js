@@ -6,6 +6,16 @@ const api = {
 window.onload=getResults2("jamnagar");
 
 getCoordintes();
+const imageObjects = [];
+const imageUrls2 = ['rain1.png', 'rain2.png', 'cloud1.png', 'cloud2.png', 'snow.png', 'wind.png'];
+function preloadImages(urls) {
+  for (const url of urls) {
+    const img = new Image();
+    img.src = url;
+    imageObjects.push(img);
+  }
+}
+preloadImages(imageUrls2);
 
 var city;
 function getCoordintes() {
@@ -445,7 +455,6 @@ function displayHourlyWeather(hourlyData) {
       weatherIconElement.src = 'sun.png'; 
     }
     var windSpeed = entry.wind ? entry.wind.speed || 0 : 0;
-    console.log(windSpeed);
     
     hourlyWeatherItem.appendChild(hourElement);
     hourlyWeatherItem.appendChild(temperatureElement);
@@ -470,7 +479,6 @@ function displayHourlyWeather(hourlyData) {
       weatherIconElement.src = 'wind.png';
       const windElement = document.createElement('div');
       windElement.classList.add('wind');
-      windSpeed=entry.wind.speed
       windElement.textContent = `Wind: ${Math.round(windSpeed*3.6)}kmph`; 
       windElement.style.fontSize = '10px';
       hourlyWeatherItem.appendChild(windElement); 
