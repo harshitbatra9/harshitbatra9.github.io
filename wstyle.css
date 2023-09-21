@@ -6,7 +6,7 @@
 
 body {
   font-family: 'montserrat', sans-serif;
-  background-image: url('thunderstorm2.jpg');
+  background-image: url('sky.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -221,20 +221,25 @@ border-bottom: 20px;
   text-align: center;
   
   width: 100px; }
-
+  .weather-icon {
+    width: 20px; 
+    height: 20px; 
+    margin-right: 5px; 
+    vertical-align: middle; 
+  }
 .hour {
   font-size: 16px;
   font-weight: bold;
 }
 .error-message {
-  background-color :rgba(234, 56, 16, 0.554) ;/* Red background color */
-  color: white; /* White text color */
-  padding: 10px; /* Add some padding to the message */
-  font-size: 16px; /* Font size */
-  text-align: center; /* Center-align the text */
-  display: none; /* Initially hide the error message */
-  margin-bottom: 10px; /* Add some space below the message */
-  border-radius: 10px; /* Add rounded corners to the message box */
+  background-color :rgba(234, 56, 16, 0.554) ;
+  color: white; 
+  padding: 10px; 
+  font-size: 16px; 
+  text-align: center; 
+  display: none; 
+  margin-bottom: 10px; 
+  border-radius: 10px; 
 }
 .temperature {
   font-size: 20px;

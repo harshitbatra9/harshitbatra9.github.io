@@ -248,14 +248,12 @@ const tomorrowButton = document.getElementById('tomorrow-button');
 const dayAfterButton = document.getElementById('day-after-button');
 const dayAfterTomorrowButton = document.getElementById('day-after-tomorrow-button');
 
-// Helper function to format date as dd/mm
 function formatDateToDdMm(date) {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
   return `${day}/${month}`;
 }
 
-// Set the initial date text for "Day After" and "Day After Tomorrow" buttons
 const today = new Date();
 const dayAfterDate = new Date(today.getTime() + 2*24 * 60 * 60 * 1000);
 const dayAfterTomorrowDate = new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000);
@@ -401,10 +399,10 @@ function displayHourlyWeather(hourlyData) {
   hourlyData.forEach((entry) => {
     const date = new Date(entry.dt * 1000);
     const hour = date.getHours();
-    
+    const snowVolume = entry.snow ? entry.snow['3h'] || 0 : 0;
     const temperature = entry.main.temp;
     const description = entry.weather[0].description;
-    const rainVolume = entry.rain ? entry.rain['3h'] || 0 : 0; // Check if rain data is available
+    const rainVolume = entry.rain ? entry.rain['3h'] || 0 : 0; 
 
     const hourlyWeatherItem = document.createElement('div');
     hourlyWeatherItem.classList.add('hourly-data');
@@ -412,31 +410,78 @@ function displayHourlyWeather(hourlyData) {
     const hourElement = document.createElement('div');
     hourElement.classList.add('hour');
     hourElement.textContent = `${hour}:00`;
-
     const temperatureElement = document.createElement('div');
     temperatureElement.classList.add('temperature');
     temperatureElement.textContent = `${Math.round(temperature)}°C`;
 
+    
+
+
     const descriptionElement = document.createElement('div');
     descriptionElement.classList.add('description');
-    descriptionElement.textContent = description;
+    const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
+    descriptionElement.textContent = capitalizedDescription;
+    
+    const weatherIconElement = document.createElement('img');
+    weatherIconElement.classList.add('weather-icon');
+    if (description.includes('rain')) {
+      const rainVolume = entry.rain ? entry.rain['3h'] || 0 : 0;
+      if (rainVolume < 5) {
+        weatherIconElement.src = 'rain1.png';
+      } else {
+        weatherIconElement.src = 'rain.png';
+      }
+    } else if (description.includes('clear')) {
+      weatherIconElement.src = 'sun.png';
+    } else if (description.includes('clouds')) {
+      const cloudCover = entry.clouds ? entry.clouds.all || 0 : 0;
+      if (cloudCover < 70) {
+        weatherIconElement.src = 'cloud1.png';
+      } else {
+        weatherIconElement.src = 'cloud.png';
+      }}else if (description.includes('snow')) {
+      weatherIconElement.src = 'snow.png';
+    } else {
+      weatherIconElement.src = 'sun.png'; 
+    }
+    var windSpeed = entry.wind ? entry.wind.speed || 0 : 0;
+    console.log(windSpeed);
+    
     hourlyWeatherItem.appendChild(hourElement);
     hourlyWeatherItem.appendChild(temperatureElement);
+    hourlyWeatherItem.appendChild(weatherIconElement);
     hourlyWeatherItem.appendChild(descriptionElement);
-    if (rainVolume > 0) { // Only add rain information if there is rain
+    if (rainVolume > 0) { 
       const rainElement = document.createElement('div');
       rainElement.classList.add('rain');
-      rainElement.textContent = `Rain: ${rainVolume} mm`; // Display rain in mm
-      hourlyWeatherItem.appendChild(rainElement); // Add rain information to the hourly item
+      rainElement.textContent = `Rain: ${rainVolume} mm`; 
+      rainElement.style.fontSize = '11px';
+      hourlyWeatherItem.appendChild(rainElement); 
     }
-
+    if (snowVolume > 0) { 
+      const snowElement = document.createElement('div');
+      snowElement.classList.add('Snow');
+      snowElement.textContent = `Snow: ${snowVolume} mm`; 
+      snowElement.style.fontSize = '11px'
+      hourlyWeatherItem.appendChild(snowElement); 
+    }
+    if (windSpeed > 8.33) {
+      const windIconElement = document.createElement('img');
+      weatherIconElement.src = 'wind.png';
+      const windElement = document.createElement('div');
+      windElement.classList.add('wind');
+      windSpeed=entry.wind.speed
+      windElement.textContent = `Wind: ${Math.round(windSpeed*3.6)}kmph`; 
+      windElement.style.fontSize = '10px';
+      hourlyWeatherItem.appendChild(windElement); 
+    }
     hourlyWeatherContainer.appendChild(hourlyWeatherItem);
+
   });
 
   hourlyWeatherContainer.classList.remove('hidden');
 }
 
-// Hide the hourly weather container by default
 const hourlyWeatherContainer = document.getElementById('hourly-weather');
 hourlyWeatherContainer.classList.add('hidden');
 
