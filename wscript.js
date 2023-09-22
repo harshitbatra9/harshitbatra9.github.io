@@ -147,6 +147,7 @@ const backgroundImageUrls = {
     'Haze': 'haze.jpg',
     'Fog': 'fog.jpg',
     'Mist': 'fog.jpg',
+    "Smoke":'haze.jpg'
 };
 const backgroundUrl = backgroundImageUrls[weather.weather[0].main];
 
@@ -446,7 +447,7 @@ function displayHourlyWeather(hourlyData) {
       weatherIconElement.src = 'sun.png';
     } else if (description.includes('clouds')) {
       const cloudCover = entry.clouds ? entry.clouds.all || 0 : 0;
-      if (cloudCover < 70) {
+      if (cloudCover < 84) {
         weatherIconElement.src = 'cloud1.png';
       } else {
         weatherIconElement.src = 'cloud.png';
