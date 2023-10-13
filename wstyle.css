@@ -23,20 +23,35 @@ body {
 
 header {
   display: flex;
-  flex-direction: column; /* Display elements in a vertical layout */
-  align-items: center; /* Center elements horizontally */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  /*padding: 20px;*/
+header input {
+  width: 100%;
+  max-width: 280px;
+  padding: 15px 15px;
+  border: none;
+  outline: none;
+  background-color: rgba(244, 240, 240, 0.8);
+  border-radius: 8px;
+  position: relative;
+  color: #313131;
+  font-size: 20px;
+  font-weight: 300;
+  transition: 0.2s ease-out;
 }
 
+header input:focus, header input:hover {
+  background-color: rgba(228, 244, 251, 0.6);
+}
 .app-logo {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* Allow the items to wrap to the next line */
+  margin-bottom: 10px; /* Add margin to create space between the logo and app name */
 }
 
 .app-logo img {
@@ -44,7 +59,7 @@ header {
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  margin-right: 10px; /* Add some margin between the logo and app name */
+  margin-right: 10px;
 }
 
 .app-name {
@@ -58,27 +73,6 @@ header {
 
 .app-name:hover {
   color: #3d5fb5;
-}
-
-.search-box {
-  width: 100%;
-  max-width: 280px;
-  border-top: 10px;
-  padding: 15px;
-  
-  outline: none;
-  background-color: rgba(244, 240, 240, 0.8);
-  border-radius: 8px;
-  position: relative;
-  color: #313131;
-  font-size: 20px;
-  font-weight: 300;
-  transition: 0.2s ease-out;
-}
-
-
-header input:focus, header input:hover {
-  background-color: rgba(228, 244, 251, 0.6);
 }
 
 main {
@@ -114,7 +108,7 @@ main {
 }
 
 .current {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.25);
   border-radius: 15px;
   padding: 15px;
   margin-bottom: 20px;
@@ -212,7 +206,7 @@ main {
 .forecast-buttons{
   font-size: 26px;
   font-weight: 500;
-  color: bisque;
+  color: rgb(40, 53, 56);
   gap:20px;
   border: 10px;
   
@@ -226,10 +220,10 @@ border-bottom: 20px;
   flex: 1; /* Equal width for each button */
   padding: 10px 20px;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   color:#2f2727;
   background-color: rgba(172, 159, 159, 0.7);
-  border:20px;
+  border:20px 40px;
   border-color:rgba(255,255,255,0.5);
   border-radius: 8px;
   cursor: pointer;
