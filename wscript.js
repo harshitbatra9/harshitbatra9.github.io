@@ -80,6 +80,7 @@ function setQuery(evt) {
   if (evt.keyCode == 13) {
     getResults2(searchbox.value);
     
+    
   }
 }
 function getResults2(query) {

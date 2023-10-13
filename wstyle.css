@@ -5,14 +5,14 @@
 }
 
 body {
+  margin: 0; 
+  padding: 0; 
   font-family: 'montserrat', sans-serif;
   background-image: url('sky.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
- /* background-attachment: fixed;*/
 }
-
 .app-wrap {
   display: flex;
   flex-direction: column;
@@ -21,17 +21,45 @@ body {
   padding: 20px;
 }
 
+
 header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   padding: 20px;
 }
 
-header input {
+.app-logo {
+  display: flex;
+  align-items: center;
+}
+
+.app-logo img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.app-name {
+  color: #3498db;
+  font-size: 36px;
+  font-weight: 700;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+  transition: color 0.3s ease-in-out;
+  margin-top: 10px; 
+}
+
+.app-name:hover {
+  color: #3d5fb5;
+}
+
+.search-box {
   width: 100%;
   max-width: 280px;
-  padding: 15px 15px;
+  padding: 15px;
   border: none;
   outline: none;
   background-color: rgba(244, 240, 240, 0.8);
@@ -43,7 +71,11 @@ header input {
   transition: 0.2s ease-out;
 }
 
-header input:focus, header input:hover {
+
+
+
+header input:focus,
+header input:hover {
   background-color: rgba(228, 244, 251, 0.6);
 }
 
@@ -60,7 +92,7 @@ main {
 .location {
   width: 100%;
   max-width: 280px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
@@ -189,13 +221,13 @@ border-bottom: 20px;
  
 }
 .forecast-buttons button {
-  flex: 1; /* Equal width for each button */
+  flex: 1; 
   padding: 10px 20px;
   font-size: 16px;
-  font-weight: 400;
-  color:#fff;
-  background-color: rgba(0, 0, 0, 0.1);
-  border:20px 40px;
+  font-weight: 500;
+  color:#2f2727;
+  background-color: rgba(172, 159, 159, 0.7);
+  border:20px;
   border-color:rgba(255,255,255,0.5);
   border-radius: 8px;
   cursor: pointer;
@@ -215,7 +247,7 @@ border-bottom: 20px;
 }
 
 .hourly-data {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.6);
   border-radius: 10px;
   padding: 10px;
   text-align: center;
