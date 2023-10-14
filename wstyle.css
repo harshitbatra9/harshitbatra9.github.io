@@ -50,8 +50,8 @@ header input:focus, header input:hover {
 .app-logo {
   display: flex;
   align-items: center;
-  flex-wrap: wrap; /* Allow the items to wrap to the next line */
-  margin-bottom: 10px; /* Add margin to create space between the logo and app name */
+  flex-wrap: wrap; 
+  margin-bottom: 10px; 
 }
 
 .app-logo img {
@@ -63,7 +63,7 @@ header input:focus, header input:hover {
 }
 
 .app-name {
-  color: #3498db;
+  color: #c4dbe9;
   font-size: 36px;
   font-weight: 700;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.2);
